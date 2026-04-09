@@ -11,6 +11,7 @@
 		"resolveJsonModule": true,
 		"verbatimModuleSyntax": true,
 		"isolatedModules": true,
+		"isolatedDeclarations": true,
 		"rootDir": "src",
 		"outDir": "dist",
 		"composite": true
