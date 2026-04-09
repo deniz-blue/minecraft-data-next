@@ -1,4 +1,4 @@
-import { access, copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import CodeBlockWriter from "code-block-writer";
@@ -103,7 +103,10 @@ const main = async (): Promise<void> => {
 	const javaVersionIds = Object.keys(dataPaths.pc ?? {}).sort();
 
 	for (const ver of javaVersionIds) {
-		const protocolVersionNumber = protocolVersions.find((v) => v.minecraftVersion === ver)?.version;
+		let protocolVersionNumber = protocolVersions.find((v) => v.minecraftVersion === ver)?.version;
+		if (!dataPaths.pc?.[ver]?.protocol && protocolVersionNumber !== undefined)
+			protocolVersionNumber = undefined;
+
 		const d = await javaData(ver, dataPaths.pc![ver]);
 		await javaModules(ver, d, protocolVersionNumber);
 		console.log(`Ingested Java version ${ver}`);

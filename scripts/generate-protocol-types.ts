@@ -81,11 +81,11 @@ async function generateProtocol(v: number, protocolJson: JsonObject): Promise<vo
 	const writer = new CodeBlockWriter();
 
 	writer.writeLine(`// ! @generated minecraft-data-next: protocol schema ${v}`);
-	writer.write(`export declare namespace Packets `).inlineBlock(() => {
+	writer.write(`export declare namespace Packets `).block(() => {
 		for (const [stateName, slices] of Object.entries(groupedByState).sort(([a], [b]) => a.localeCompare(b))) {
 			const stateNamespace = toPascalCase(stateName);
 
-			writer.write(`export namespace ${stateNamespace} `).inlineBlock(() => {
+			writer.write(`export namespace ${stateNamespace} `).block(() => {
 				const sortedSlices = slices!.sort((a, b) => a.direction.localeCompare(b.direction));
 
 				for (const slice of sortedSlices) {
@@ -102,7 +102,7 @@ async function generateProtocol(v: number, protocolJson: JsonObject): Promise<vo
 						.filter((name) => name.startsWith("packet_"))
 						.sort((a, b) => a.localeCompare(b));
 
-					writer.write(`export namespace ${directionNamespace} `).inlineBlock(() => {
+					writer.write(`export namespace ${directionNamespace} `).block(() => {
 						const packetMapEntries: string[] = [];
 
 						for (const packetTypeName of packetTypeNames) {
@@ -151,7 +151,7 @@ const main = async (): Promise<void> => {
 	const dataPaths = await readJson<DataPaths>(path.join(upstreamDataDir, "dataPaths.json"));
 	const protocolVersions = await readJson<ProtocolVersionEntry[]>(path.join(upstreamDataDir, "pc", "common", "protocolVersions.json"));
 
-	for (const { version, minecraftVersion, releaseType } of protocolVersions) {
+	for (const { version, minecraftVersion } of protocolVersions) {
 		const protocolPath = dataPaths.pc?.[minecraftVersion]?.protocol;
 		if (!protocolPath) {
 			console.warn(`Protocol path not found for Minecraft version ${minecraftVersion} (protocol version ${version}). Skipping.`);
@@ -160,9 +160,9 @@ const main = async (): Promise<void> => {
 
 		const protocolJson = await readJson<JsonObject>(path.join(upstreamDataDir, protocolPath, "protocol.json"));
 
-		await generateProtocol(version, protocolJson);
+		console.log(`Generating ${minecraftVersion} (protocol version ${version}).`);
 
-		console.log(`Generated protocol types for Minecraft version ${minecraftVersion} (protocol version ${version}).`);
+		await generateProtocol(version, protocolJson);
 	}
 };
 
