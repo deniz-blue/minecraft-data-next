@@ -1,6 +1,19 @@
 {
-	"references": [
-		{ "path": "./tsconfig.lib.json" },
-		{ "path": "./tsconfig.scripts.json" },
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"types": [
+			"node"
+		],
+		"composite": true
+	},
+	"include": [
+		"scripts/**/*.ts"
 	]
 }

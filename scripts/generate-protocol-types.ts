@@ -152,7 +152,6 @@ const main = async (): Promise<void> => {
 	const protocolVersions = await readJson<ProtocolVersionEntry[]>(path.join(upstreamDataDir, "pc", "common", "protocolVersions.json"));
 
 	for (const { version, minecraftVersion, releaseType } of protocolVersions) {
-		if (releaseType !== "release") continue;
 		const protocolPath = dataPaths.pc?.[minecraftVersion]?.protocol;
 		if (!protocolPath) {
 			console.warn(`Protocol path not found for Minecraft version ${minecraftVersion} (protocol version ${version}). Skipping.`);

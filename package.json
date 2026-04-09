@@ -1,6 +1,6 @@
 {
 	"name": "minecraft-data-next",
-	"version": "0.1.0",
+	"version": "0.1.0+2026_04_09",
 	"description": "Tree-shakeable, ESM-first Minecraft data library",
 	"packageManager": "pnpm@10.8.1",
 	"type": "module",
@@ -23,6 +23,10 @@
 		"./java/*/*": {
 			"types": "./dist/java/*/*.d.ts",
 			"import": "./dist/java/*/*.js"
+		},
+		"./protocol/*": {
+			"types": "./dist/protocol/*/index.d.ts",
+			"import": "./dist/protocol/*/index.js"
 		}
 	},
 	"files": [
@@ -31,14 +35,13 @@
 		"README.md"
 	],
 	"scripts": {
-		"clean": "rm -rf dist src/generated src/java src/protocol src/data",
+		"clean": "rm -rf dist",
 		"sync:upstream": "tsx scripts/sync-upstream.ts",
-		"build": "pnpm run clean && pnpm run generate && pnpm run build:src",
-		"build:src": "oxc transform src --out-dir dist && tsc -p tsconfig.lib.json --emitDeclarationOnly",
+		"build": "pnpm run clean && pnpm run generate",
 		"generate": "pnpm run ingest:data && pnpm run generate:protocol",
 		"ingest:data": "tsx scripts/ingest-data.ts",
 		"generate:protocol": "tsx scripts/generate-protocol-types.ts",
-		"typecheck": "echo 'type checking skipped for generated codebase'"
+		"prepublish": "tsx scripts/update-pkg-version.ts"
 	},
 	"keywords": [
 		"minecraft",
