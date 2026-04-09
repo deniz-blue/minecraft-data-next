@@ -31,7 +31,7 @@
 		"README.md"
 	],
 	"scripts": {
-		"clean": "rm -rf dist src/generated src/java",
+		"clean": "rm -rf dist src/generated src/java src/protocol src/data",
 		"sync:upstream": "tsx scripts/sync-upstream.ts",
 		"build": "pnpm run clean && pnpm run generate && pnpm run build:src",
 		"build:src": "tsc -p tsconfig.lib.json",
@@ -53,8 +53,8 @@
 	"devDependencies": {
 		"@types/node": "^22.15.3",
 		"code-block-writer": "^13.0.3",
-		"tsx": "^4.19.2",
 		"protodef-next": "^0.2.1",
-		"typescript": "^5.8.3"
+		"tsx": "^4.19.2",
+		"typescript": "^6.0.2"
 	}
 }

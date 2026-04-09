@@ -20,7 +20,7 @@ const DIRECTION_NAMESPACE_BY_KEY: Record<SchemaSlice["direction"], string> = {
 
 const rootDir = process.cwd();
 const upstreamDataDir = path.join(rootDir, "vendor", "minecraft-data", "data");
-const outputJavaProtoDir = path.join(rootDir, "src", "protocol", "java");
+const outputJavaProtoDir = path.join(rootDir, "dist", "protocol", "java");
 
 function packetTypeNameToPascalCase(packetTypeName: string): string {
 	return toPascalCase(packetTypeName.replace(/^packet_/, ""));
@@ -118,7 +118,7 @@ async function generateProtocol(v: number, protocolJson: JsonObject): Promise<vo
 								writer.writeLine(generated);
 							} catch (error) {
 								const safeMessage = error instanceof Error ? error.message : "unknown error";
-								console.log(`Error generating type for packet ${packetTypeName} in state ${stateName} (${slice.direction})`, error);
+								// console.log(`Error generating type for packet ${packetTypeName} in state ${stateName} (${slice.direction})`, error);
 								writer.writeLine(`// Error: ${safeMessage}`);
 								writer.writeLine(`export type ${pascalPacketTypeName} = unknown;`);
 							}
@@ -143,7 +143,8 @@ async function generateProtocol(v: number, protocolJson: JsonObject): Promise<vo
 		}
 	});
 
-	await writeText(path.join(outputDir, "index.ts"), writer.toString());
+	await writeText(path.join(outputDir, "index.d.ts"), writer.toString());
+	await writeText(path.join(outputDir, "index.js"), `export {};`);
 }
 
 const main = async (): Promise<void> => {

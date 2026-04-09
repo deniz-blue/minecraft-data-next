@@ -65,6 +65,7 @@ async function javaModules(javaVersion: string, domainFiles: string[], protocolV
 
 	if (protocolVersionNumber !== undefined) {
 		await writeText(path.join(versionSourceDir, `packets.ts`), [
+			"// @ts-ignore",
 			`export * from "../../protocol/java/${protocolVersionNumber}/index.js";`
 		].join("\n"));
 		exports.push(`export * from "./packets.js";`);
@@ -87,7 +88,6 @@ async function generateIndex(javaVersions: string[]): Promise<void> {
 	}).write(" as const;").newLine();
 
 	writer.writeLine("export type JavaVersionId = keyof typeof versions.java;");
-	writer.writeLine("export type JavaVersionModule = Awaited<ReturnType<(typeof versions.java)[JavaVersionId]>>;");
 
 	await writeText(path.join(outputJavaDir, "index.ts"), writer.toString());
 }
