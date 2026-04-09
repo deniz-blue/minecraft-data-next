@@ -14,6 +14,9 @@ importers:
       code-block-writer:
         specifier: ^13.0.3
         version: 13.0.3
+      oxc:
+        specifier: latest
+        version: 1.0.1
       protodef-next:
         specifier: ^0.2.1
         version: 0.2.1
@@ -201,6 +204,10 @@ packages:
   get-tsconfig@4.13.7:
     resolution: {integrity: sha512-7tN6rFgBlMgpBML5j8typ92BKFi2sFQvIdpAqLA2beia5avZDrMs0FLZiM5etShWq5irVyGcGMEA1jcDaK7A/Q==}
 
+  oxc@1.0.1:
+    resolution: {integrity: sha512-MJ18y2Ekl329i3zdZpRVOqFdEUjoRKC1+uy1f4kuRp9ygindCVVUIhhKxwyAhTsWt3jIV8UczKtlTwWWahcaWQ==}
+    hasBin: true
+
   protodef-next@0.2.1:
     resolution: {integrity: sha512-fil0opODYDzcfqksPU+mJvW06JtKPJKv3sHtY+WRXclet6jpisLpeOT4B6TGTSodbE4+1D6faPO3FFmN791LRg==}
 
@@ -341,6 +348,8 @@ snapshots:
   get-tsconfig@4.13.7:
     dependencies:
       resolve-pkg-maps: 1.0.0
+
+  oxc@1.0.1: {}
 
   protodef-next@0.2.1:
     dependencies:

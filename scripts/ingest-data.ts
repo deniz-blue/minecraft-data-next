@@ -8,9 +8,9 @@ import type { DataPaths, ProtocolVersionEntry } from "./types.js";
 const rootDir = process.cwd();
 const upstreamDataDir = path.join(rootDir, "vendor", "minecraft-data", "data");
 
-const outputDataDir = path.join(rootDir, "src", "data");
+const outputDataDir = path.join(rootDir, "dist", "data");
 const outputJavaDataDir = path.join(outputDataDir, "java");
-const outputJavaDir = path.join(rootDir, "src", "java");
+const outputJavaDir = path.join(rootDir, "dist", "java");
 
 async function javaData(
 	javaVersion: string,
@@ -41,7 +41,7 @@ async function javaData(
 async function javaModules(javaVersion: string, domainFiles: string[], protocolVersionNumber: number | undefined): Promise<void> {
 	const versionSourceDir = path.join(outputJavaDir, javaVersion);
 
-	const exports: string[] = [];
+	const indexExports: string[] = [];
 
 	for (const fileName of domainFiles) {
 		const domain = fileName.slice(0, -5);
@@ -55,29 +55,25 @@ async function javaModules(javaVersion: string, domainFiles: string[], protocolV
 		const moduleSource = [
 			`import data from "../../data/java/${javaVersion}/${fileName}" with { type: "json" };`,
 			`export const ${symbolName} = data;`,
-			`export type ${typeName} = typeof ${symbolName};`,
-			""
 		].join("\n");
 
-		await writeText(path.join(versionSourceDir, `${domain}.ts`), moduleSource);
-		exports.push(`export * from "./${domain}.js";`);
+		await writeText(path.join(versionSourceDir, `${domain}.js`), moduleSource + "\n");
+		indexExports.push(`export * from "./${domain}.js";`);
 	}
 
 	if (protocolVersionNumber !== undefined) {
-		await writeText(path.join(versionSourceDir, `packets.ts`), [
-			"// @ts-ignore",
+		await writeText(path.join(versionSourceDir, `packets.js`), [
 			`export * from "../../protocol/java/${protocolVersionNumber}/index.js";`
 		].join("\n"));
-		exports.push(`export * from "./packets.js";`);
+		indexExports.push(`export * from "./packets.js";`);
 	}
 
-	exports.push("");
-
-	await writeText(path.join(versionSourceDir, "index.ts"), `${exports.join("\n")}\n`);
+	await writeText(path.join(versionSourceDir, "index.js"), `${indexExports.join("\n")}\n`);
 }
 
 async function generateIndex(javaVersions: string[]): Promise<void> {
 	const writer = new CodeBlockWriter();
+	const typeWriter = new CodeBlockWriter();
 
 	writer.write(`export const versions = `).inlineBlock(() => {
 		writer.write("java: ").inlineBlock(() => {
@@ -85,11 +81,20 @@ async function generateIndex(javaVersions: string[]): Promise<void> {
 				writer.writeLine(`"${version}": () => import("./${version}/index.js"),`);
 			}
 		}).write(",");
+	}).write(";").newLine();
+
+	typeWriter.write(`export const versions = `).inlineBlock(() => {
+		typeWriter.write("java: ").inlineBlock(() => {
+			for (const version of javaVersions) {
+				typeWriter.writeLine(`"${version}": () => import("./${version}/index.js"),`);
+			}
+		}).write(",");
 	}).write(" as const;").newLine();
 
-	writer.writeLine("export type JavaVersionId = keyof typeof versions.java;");
+	typeWriter.writeLine("export type JavaVersionId = keyof typeof versions.java;");
 
-	await writeText(path.join(outputJavaDir, "index.ts"), writer.toString());
+	await writeText(path.join(outputJavaDir, "index.js"), writer.toString());
+	await writeText(path.join(outputJavaDir, "index.d.ts"), typeWriter.toString());
 }
 
 const main = async (): Promise<void> => {
