@@ -55,7 +55,7 @@
 		"@types/node": "^22.15.3",
 		"code-block-writer": "^13.0.3",
 		"oxc": "latest",
-		"protodef-next": "^0.2.1",
+		"protodef-next": "^0.2.2",
 		"tsx": "^4.19.2",
 		"typescript": "^6.0.2"
 	}

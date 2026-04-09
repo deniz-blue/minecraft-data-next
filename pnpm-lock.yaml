@@ -18,8 +18,8 @@ importers:
         specifier: latest
         version: 1.0.1
       protodef-next:
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.2.2
+        version: 0.2.2
       tsx:
         specifier: ^4.19.2
         version: 4.21.0
@@ -208,8 +208,8 @@ packages:
     resolution: {integrity: sha512-MJ18y2Ekl329i3zdZpRVOqFdEUjoRKC1+uy1f4kuRp9ygindCVVUIhhKxwyAhTsWt3jIV8UczKtlTwWWahcaWQ==}
     hasBin: true
 
-  protodef-next@0.2.1:
-    resolution: {integrity: sha512-fil0opODYDzcfqksPU+mJvW06JtKPJKv3sHtY+WRXclet6jpisLpeOT4B6TGTSodbE4+1D6faPO3FFmN791LRg==}
+  protodef-next@0.2.2:
+    resolution: {integrity: sha512-0dvs+5JnNvvz/icZy5xxMJy9HVbLhk1bnci2RldOpxuxkAXfJM9HyDRlyh1tm8DQw3Tefj2d+MA5eXOTNbNXXg==}
 
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
@@ -351,7 +351,7 @@ snapshots:
 
   oxc@1.0.1: {}
 
-  protodef-next@0.2.1:
+  protodef-next@0.2.2:
     dependencies:
       code-block-writer: 13.0.3
 

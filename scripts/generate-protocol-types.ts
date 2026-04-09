@@ -44,6 +44,8 @@ function flattenStateSchemas(protocolJson: JsonObject): SchemaSlice[] {
 	const states = Object.entries(protocolJson).filter(([name]) => name !== "types");
 	const results: SchemaSlice[] = [];
 
+	const rootTypes = protocolJson.types as Record<string, unknown> | undefined;
+
 	for (const [stateName, stateValue] of states) {
 		if (!stateValue || typeof stateValue !== "object") {
 			continue;
@@ -65,7 +67,10 @@ function flattenStateSchemas(protocolJson: JsonObject): SchemaSlice[] {
 			results.push({
 				stateName,
 				direction,
-				types: scopedTypes as Record<string, unknown>
+				types: {
+					...rootTypes,
+					...scopedTypes,
+				} as Record<string, unknown>
 			});
 		}
 	}
