@@ -31,15 +31,16 @@
 		"README.md"
 	],
 	"scripts": {
-		"clean": "rm -rf dist src/generated src/java src/pc scripts/*.js scripts/*.js.map scripts/*.d.ts scripts/*.d.ts.map",
+		"clean": "rm -rf dist src/generated src/java",
 		"sync:upstream": "tsx scripts/sync-upstream.ts",
+		"build": "pnpm run clean && pnpm run generate && pnpm run build:src",
+		"build:src": "tsc -p tsconfig.lib.json",
+		"generate": "pnpm run ingest:data && pnpm run generate:protocol",
 		"ingest:data": "tsx scripts/ingest-data.ts",
 		"generate:protocol": "tsx scripts/generate-protocol-types.ts",
-		"generate": "pnpm run ingest:data && pnpm run generate:protocol",
-		"build": "pnpm run clean && pnpm run generate && tsc -p tsconfig.json",
 		"typecheck": "pnpm run typecheck:src && pnpm run typecheck:scripts",
-		"typecheck:src": "tsc -p tsconfig.json --noEmit",
-		"typecheck:scripts": "tsc -p tsconfig.scripts.json"
+		"typecheck:src": "tsc -p tsconfig.lib.json --noEmit",
+		"typecheck:scripts": "tsc -p tsconfig.scripts.json --noEmit"
 	},
 	"keywords": [
 		"minecraft",

@@ -1,3 +1,10 @@
+# Build output
+dist/
+
+# Generated code and data
+src/
+!src/index.ts
+
 # Logs
 logs
 *.log
@@ -137,16 +144,3 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-
-# Build output
-dist/
-
-# Generated code and data
-src/generated/
-src/java/
-
-# Script compile artifacts
-scripts/*.js
-scripts/*.js.map
-scripts/*.d.ts
-scripts/*.d.ts.map
