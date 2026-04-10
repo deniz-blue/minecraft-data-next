@@ -8,15 +8,15 @@ import type { DataPaths, ProtocolVersionEntry } from "./types.js";
 const rootDir = process.cwd();
 const upstreamDataDir = path.join(rootDir, "vendor", "minecraft-data", "data");
 
-const outputDataDir = path.join(rootDir, "dist", "data");
-const outputJavaDataDir = path.join(outputDataDir, "java");
-const outputJavaDir = path.join(rootDir, "dist", "java");
+const outputDir = path.join(rootDir, "dist");
+const outputDataDir = path.join(outputDir, "data");
+const outputJavaDir = path.join(outputDir, "java");
 
 async function javaData(
 	javaVersion: string,
 	sourcePaths: Record<string, string>
 ): Promise<string[]> {
-	const outputDir = path.join(outputJavaDataDir, javaVersion);
+	const outputDir = path.join(outputDataDir, "java", javaVersion);
 	await mkdir(outputDir, { recursive: true });
 
 	const domainNames = Object.keys(sourcePaths).sort();
@@ -113,6 +113,10 @@ const main = async (): Promise<void> => {
 	}
 
 	await generateIndex(javaVersionIds);
+	console.log("Generated java/index.ts");
+
+	await writeText(path.join(outputDir, "index.js"), `export {};`);
+	await copy(path.join(rootDir, "scripts", "res", "index.d.ts"), path.join(outputDir, "index.d.ts"));
 	console.log("Generated index.ts");
 };
 
